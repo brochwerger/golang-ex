@@ -9,7 +9,13 @@ import (
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 	response := os.Getenv("RESPONSE")
 	if len(response) == 0 {
-		response = "Hello OpenShift!"
+		hostname, err := os.Hostname()
+		if err != nil {
+			hostname = "UNKNOWN"
+		}
+
+		response = fmt.Sprintf("Hello OpenShift from %v !", hostname)
+
 	}
 
 	fmt.Fprintln(w, response)
